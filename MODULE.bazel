@@ -3,7 +3,7 @@ module(
     version = "0.1.0",
 )
 
-
+bazel_dep(name = "picotool", version = "2.2.0")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.14")
 bazel_dep(name = "pico-sdk", version = "2.2.0")
@@ -17,4 +17,13 @@ register_toolchains(
     "@pico-sdk//bazel/toolchain:mac-x86_64-rp2350",
     "@pico-sdk//bazel/toolchain:mac-aarch64-rp2040",
     "@pico-sdk//bazel/toolchain:mac-aarch64-rp2350",
+)
+
+new_git_repository = use_repo_rule("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
+
+new_git_repository(
+    name = "tinyusb",
+    build_file = "@pico-sdk//src/rp2_common/tinyusb:tinyusb.BUILD",
+    commit = "86ad6e56c1700e85f1c5678607a762cfe3aa2f47",
+    remote = "https://github.com/hathach/tinyusb.git",
 )
