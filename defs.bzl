@@ -1,22 +1,24 @@
 load("@pico-sdk//tools:uf2_aspect.bzl", "pico_uf2_aspect")
 
-def _pico_transition_impl(settings, attr):
+def _pico_usb_device_transition_impl(settings, attr):
     tusb_config_label = str(attr.tinyusb_config)
     return {
         "//command_line_option:platforms": "@pico-sdk//bazel/platform:rp2350",
         "@pico-sdk//bazel/config:PICO_STDIO_USB": attr.stdio_usb,
         "@pico-sdk//bazel/config:PICO_STDIO_UART": attr.stdio_uart,
         "@pico-sdk//bazel/config:PICO_TINYUSB_CONFIG": str(attr.tinyusb_config),
+        "//command_line_option:copt": ["-DLIB_TINYUSB_DEVICE=1"],        
     }
 
 pico_rp2350_transition = transition(
-    implementation = _pico_transition_impl,
+    implementation = _pico_usb_device_transition_impl,
     inputs = [],
     outputs = [
         "//command_line_option:platforms",
         "@pico-sdk//bazel/config:PICO_STDIO_USB",
         "@pico-sdk//bazel/config:PICO_STDIO_UART",
         "@pico-sdk//bazel/config:PICO_TINYUSB_CONFIG",
+        "//command_line_option:copt",
     ],
 )
 
@@ -52,7 +54,7 @@ pico_firmware = rule(
             mandatory = True,
         ),
         "stdio_usb": attr.bool(
-            default = False,
+            default = True,
             doc = "Enable USB stdio",
         ),
         "stdio_uart": attr.bool(

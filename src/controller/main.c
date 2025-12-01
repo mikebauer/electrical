@@ -1,7 +1,8 @@
 
 #include "bsp/board_api.h"
-#include "src/controller/printf.h"
+#include "pico/stdio.h"
 #include "tusb.h"
+#include <stdio.h>
 
 #define REPORT_ID_GAMEPAD 1
 
@@ -18,6 +19,7 @@ int main(void) {
   tusb_rhport_init_t dev_init = {.role = TUSB_ROLE_DEVICE,
                                  .speed = TUSB_SPEED_AUTO};
   tusb_init(BOARD_TUD_RHPORT, &dev_init);
+  stdio_init_all();
 
   while (1) {
     tud_task();
@@ -63,6 +65,6 @@ static void hid_task(void) {
       tud_hid_report(REPORT_ID_GAMEPAD, &report, sizeof(report));
 
   if (success) {
-    cdc_printf("Succeeded with buttons: %x\n\r", report.buttons);
+    printf("Sent report!\n");
   }
 }

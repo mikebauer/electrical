@@ -41,4 +41,8 @@
 //------------- HID BUFFER --------------//
 #define CFG_TUD_HID_EP_BUFSIZE    16
 
+
+//#define LIB_TINYUSB_DEVICE 1
+//#define PICO_STDIO_USB_USE_DEFAULT_DESCRIPTORS 0
+
 #endif /* _TUSB_CONFIG_H_ */
